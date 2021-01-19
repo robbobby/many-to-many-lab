@@ -1,6 +1,7 @@
 package com.example.manyToManyLab.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -24,8 +25,24 @@ public class Employee {
     private int employeeNumber;
 
 
-//    @Column(name = "projects")
-//    private List<Project> projects;
+    @ManyToMany
+    @JsonIgnoreProperties({"employees"})
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @JoinTable(
+            name = "employees_projects",
+            joinColumns = { @JoinColumn(
+                    name = "employee_id",
+                    nullable = false,
+                    updatable = false)
+            },
+            inverseJoinColumns = { @JoinColumn(
+                    name = "project_id",
+                    nullable = false,
+                    updatable = false)
+            }
+    )
+
+    private List<Project> projects;
 
     @ManyToOne
     @JoinColumn(name="department_id", nullable = false)
@@ -40,7 +57,7 @@ public class Employee {
         this.lastName = lastName;
         this.employeeNumber = employeeNumber;
         this.department = department;
-//        this.projects = new ArrayList<>();
+        this.projects = new ArrayList<>();
 
     }
 
@@ -76,11 +93,15 @@ public class Employee {
         this.department = department;
     }
 
-//    public List<Project> getProjects() {
-//        return projects;
-//    }
-//
-//    public void setProjects(List<Project> projects) {
-//        this.projects = projects;
-//    }
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
+    }
+
+    public void addProject(Project project) {
+        projects.add(project);
+    }
 }

@@ -1,6 +1,9 @@
 package com.example.manyToManyLab.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +22,25 @@ public class Project {
     @Column(name = "duration")
     private int duration;
 
-    @Column(name = "employees")
+
+    @ManyToMany
+    @JsonIgnoreProperties({"projects"})
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @JoinTable(
+            name = "employees_projects",
+            joinColumns = { @JoinColumn(
+                    name = "project_id",
+                    nullable = false,
+                    updatable = false)
+            },
+            inverseJoinColumns = { @JoinColumn(
+                    name = "employee_id",
+                    nullable = false,
+                    updatable = false)
+            })
     private List<Employee> employees;
+
+    public Project() {}
 
     public Project(String name, int duration) {
         this.name = name;
@@ -50,5 +70,9 @@ public class Project {
 
     public void setEmployees(List<Employee> employees) {
         this.employees = employees;
+    }
+
+    public void add(Employee employee) {
+        employees.add(employee);
     }
 }
