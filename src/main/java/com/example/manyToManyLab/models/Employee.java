@@ -24,8 +24,8 @@ public class Employee {
     private int employeeNumber;
 
 
-    @Column(name = "projects")
-    private List<Project> projects;
+//    @Column(name = "projects")
+//    private List<Project> projects;
 
     @ManyToOne
     @JoinColumn(name="department_id", nullable = false)
@@ -40,7 +40,7 @@ public class Employee {
         this.lastName = lastName;
         this.employeeNumber = employeeNumber;
         this.department = department;
-        this.projects = new ArrayList<>();
+//        this.projects = new ArrayList<>();
 
     }
 
@@ -76,11 +76,11 @@ public class Employee {
         this.department = department;
     }
 
-    public List<Project> getProjects() {
-        return projects;
-    }
-
-    public void setProjects(List<Project> projects) {
-        this.projects = projects;
-    }
+//    public List<Project> getProjects() {
+//        return projects;
+//    }
+//
+//    public void setProjects(List<Project> projects) {
+//        this.projects = projects;
+//    }
 }
